@@ -4,41 +4,54 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Greedy Visualizer</title>
+ 
 <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+ 
+<style>
+.rotate-symbol { display:inline-block; animation: rotate-symbol 2s infinite ease-in-out; }
+@keyframes rotate-symbol {
+  0%{transform:rotate(0deg);}
+  50%{transform:rotate(15deg);}
+  100%{transform:rotate(0deg);}
+}
+</style>
 </head>
-
+ 
 <body class="bg-gray-950 text-gray-100 min-h-screen font-mono flex flex-col items-center p-20">
-
-  <!-- Background Video -->
-<video autoplay muted loop playsinline class=" blur-sm fixed top-0 left-0 w-full h-full object-cover -z-10">
+ 
+<!-- Background Video -->
+<video autoplay muted loop playsinline class="blur-sm fixed top-0 left-0 w-full h-full object-cover -z-10">
   <source src="v4.mp4" type="video/mp4">
-
 </video>
-
-<header class="w-full flex flex-col items-center mb-10">
-  <h1 class="text-3xl md:text-4xl font-extrabold flex items-center gap-1 mb-1 text-center">
+ 
+<header class="w-full flex flex-col items-center mb-6">
+  <h1 class="text-3xl md:text-4xl font-extrabold flex items-center gap-1 text-center">
     <span class="rotate-symbol text-purple-400">_</span>
     <span class="text-green-400">Greedy</span>
     <span class="text-purple-500">Visualizer</span>
     <span class="rotate-symbol text-purple-400">&lt;&gt;</span>
-
-
-    
   </h1>
-  <p class="text-gray-400 mt-1 font-mono">Activity Selection Algorithm Visualizer</p>
+  <p class="text-gray-400 mt-1">Visualize Greedy Algorithms</p>
 </header>
-
-
-
-<section class="max-w-4xl mx-auto bg-gray-900 p-6 rounded-xl">
-
-<h2 class="text-2xl text-orange-400 font-bold mb-4 text-center">
+ 
+<!-- Tabs -->
+<div class="flex gap-4 mb-8">
+  <button class="tab-btn bg-orange-500 px-4 py-2 rounded text-white" data-tab="activity">Activity Selection</button>
+  <button class="tab-btn bg-purple-500 px-4 py-2 rounded text-white" data-tab="knapsack">Fractional Knapsack</button>
+</div>
+ 
+<section class="w-full max-w-5xl mx-auto space-y-8">
+ 
+<!-- Activity Selection -->
+<div id="activity" class="algo-card bg-gray-900 p-6 rounded-2xl shadow-lg">
+<h2 class="text-2xl text-orange-400 font-bold text-center mb-4">
 Activity Selection Problem
 </h2>
-
+ 
 <div class="flex gap-4 justify-center mb-6">
 <textarea id="gActs" rows="5"
-class="bg-slate-800 p-3 rounded w-72">
+class="bg-slate-800 p-3 rounded w-72 border border-slate-600">
 1,2
 3,4
 0,6
@@ -46,56 +59,110 @@ class="bg-slate-800 p-3 rounded w-72">
 8,9
 5,9
 </textarea>
+ 
 <div class="flex flex-col gap-2">
-<button onclick="startGreedy()" class="bg-orange-500 px-4 py-2 rounded">Start</button>
-<button onclick="resetGreedy()" class="bg-red-500 px-4 py-2 rounded">Reset</button>
+<button onclick="startGreedy()" class="bg-green-600 px-4 py-2 rounded">Start</button>
+<button onclick="resetGreedy()" class="bg-red-600 px-4 py-2 rounded">Reset</button>
 </div>
 </div>
-
+ 
 <div class="grid md:grid-cols-2 gap-6">
 <div>
 <h3 class="text-cyan-400 mb-2">Visualization</h3>
 <div id="gVis" class="space-y-2"></div>
 </div>
-
+ 
 <div>
 <h3 class="text-cyan-400 mb-2">Explanation</h3>
 <div id="gExplain" class="bg-slate-800 p-4 rounded min-h-[160px]"></div>
-
-<h3 class="text-cyan-400 mt-4 mb-2">Pseudocode</h3>
-<pre class="bg-slate-800 p-4 rounded text-sm">
-Sort by finish time
-Select first activity
-For each next
- if start ≥ lastFinish
-   select activity
-</pre>
 </div>
 </div>
-
+</div>
+ 
+<!-- Fractional Knapsack -->
+<div id="knapsack" class="algo-card hidden bg-gray-900 p-6 rounded-2xl shadow-lg">
+ 
+<h2 class="text-2xl text-purple-400 font-bold text-center mb-4">
+Fractional Knapsack
+</h2>
+ 
+<div class="flex flex-col md:flex-row gap-4 justify-center mb-6">
+<textarea id="kItems" rows="5"
+class="bg-slate-800 p-3 rounded w-72 border border-slate-600"
+placeholder="value weight">
+60 10
+100 20
+120 30
+</textarea>
+ 
+<input id="kCap" type="number" value="50"
+class="bg-slate-800 p-2 rounded border border-slate-600 w-32"
+placeholder="Capacity">
+ 
+<div class="flex flex-col gap-2">
+<button onclick="startKnapsack()" class="bg-green-600 px-4 py-2 rounded">Start</button>
+<button onclick="resetKnapsack()" class="bg-red-600 px-4 py-2 rounded">Reset</button>
+</div>
+</div>
+ 
+<div class="grid md:grid-cols-2 gap-6">
+ 
+  <!-- Sorted list -->
+  <div>
+    <h3 class="text-cyan-400 mb-2">Sorted Items (by value / weight)</h3>
+    <div id="kList" class="space-y-1 text-sm"></div>
+  </div>
+ 
+  <!-- Explanation -->
+  <div>
+    <h3 class="text-cyan-400 mb-2">Explanation</h3>
+    <div
+      id="kExplain"
+      class="bg-slate-800 p-4 rounded min-h-[160px] whitespace-pre-line">
+    </div>
+  </div>
+ 
+</div>
+ 
+ 
+</div>
+ 
 </section>
-
-<!-- Footer -->
+ 
 <footer class="mt-10 text-gray-400 text-sm text-center">
   <span class="rotate-symbol">&lt;/&gt;</span>
-  Computer Algorithm Project | Autumn 25 | Section : 4AF 
+  Computer Algorithm Project | Autumn 25 | Section : 4AF
   <span class="rotate-symbol">&lt;/&gt;</span>
 </footer>
-
+ 
 <script>
+// Tabs
+const tabs = document.querySelectorAll(".tab-btn");
+const cards = document.querySelectorAll(".algo-card");
+tabs.forEach(btn=>{
+  btn.onclick=()=>{
+    cards.forEach(c=>c.classList.add("hidden"));
+    document.getElementById(btn.dataset.tab).classList.remove("hidden");
+  };
+});
+</script>
+ 
+<script>
+// Activity Selection
 function startGreedy(){
   gVis.innerHTML='';
+  gExplain.innerText='';
   let acts=gActs.value.trim().split('\n')
-    .map(l=>{let[a,b]=l.split(',').map(Number);return{a,b};});
-  acts.sort((x,y)=>x.b-y.b);
-
+    .map(l=>{let[a,b]=l.split(',').map(Number);return{a,b};})
+    .sort((x,y)=>x.b-y.b);
+ 
   let end=-Infinity;
   acts.forEach(o=>{
     const d=document.createElement('div');
     if(o.a>=end){
       d.className='bg-green-500 p-2 rounded';
       end=o.b;
-      gExplain.innerText='Selected activity with earliest finish time';
+      gExplain.innerText=`Selected (${o.a}, ${o.b}) — earliest finish time`;
     }else{
       d.className='bg-red-500 p-2 rounded';
     }
@@ -103,12 +170,100 @@ function startGreedy(){
     gVis.appendChild(d);
   });
 }
-
 function resetGreedy(){
   gVis.innerHTML='';
   gExplain.innerText='';
 }
+ 
+// Fractional Knapsack
+ 
+let items=[], idx=0, cap=0, total=0, timer;
+ 
+function startKnapsack() {
+  clearInterval(timer);
+ 
+  items = kItems.value.trim().split('\n')
+    .map(l => {
+      let [v, w] = l.split(' ').map(Number);
+      return { v, w, ratio: v / w, taken: 0 }; // taken=0, will mark later
+    })
+    .sort((a, b) => b.ratio - a.ratio);
+ 
+  idx = 0;
+  cap = +kCap.value;
+  total = 0;
+ 
+  // Render list
+  kList.innerHTML = '';
+  items.forEach((it, i) => {
+    const d = document.createElement('div');
+    d.id = `row-${i}`;
+    d.className = 'bg-slate-800 px-3 py-1 rounded flex justify-between items-center';
+    d.innerText = `v=${it.v}, w=${it.w}, ratio=${it.ratio.toFixed(2)}`;
+    kList.appendChild(d);
+  });
+ 
+  kExplain.innerText = `Items sorted by value/weight ratio\nInitial capacity = ${cap}`;
+ 
+  //  animation
+  timer = setInterval(stepKnapsack, 2000); 
+}
+ 
+function stepKnapsack() {
+  if (idx >= items.length) {
+    clearInterval(timer);
+    kExplain.innerText += `\n\n✔ Total value obtained = ${total.toFixed(2)}`;
+    return;
+  }
+ 
+  const it = items[idx];
+  const row = document.getElementById(`row-${idx}`);
+ 
+  // Reset previous highlights
+  items.forEach((_, i) => {
+    if (i !== idx) {
+      const r = document.getElementById(`row-${i}`);
+      if (items[i].taken === 1) r.className = 'bg-green-600 px-3 py-1 rounded flex justify-between items-center';
+      else if (items[i].taken === 2) r.className = 'bg-yellow-500 px-3 py-1 rounded flex justify-between items-center';
+      else if (items[i].taken === 0) r.className = 'bg-red-600 px-3 py-1 rounded flex justify-between items-center';
+    }
+  });
+ 
+  // Highlight current item
+  row.className = 'bg-blue-500 px-3 py-1 rounded flex justify-between items-center';
+ 
+  // Step logic
+  setTimeout(() => {
+    if (it.w <= cap) {
+      cap -= it.w;
+      total += it.v;
+      it.taken = 1; // full
+      row.className = 'bg-green-600 px-3 py-1 rounded flex justify-between items-center';
+      kExplain.innerText = `Considering item (v=${it.v}, w=${it.w})\nTaken fully\nRemaining capacity = ${cap}`;
+    } else if (cap > 0) {
+      const frac = cap / it.w;
+      total += it.v * frac;
+      it.taken = 2; // fraction
+      row.className = 'bg-yellow-500 px-3 py-1 rounded flex justify-between items-center';
+      kExplain.innerText = `Considering item (v=${it.v}, w=${it.w})\nTaken fraction = ${frac.toFixed(2)}\nRemaining capacity = 0`;
+      cap = 0;
+    } else {
+      it.taken = 0; // not taken
+      row.className = 'bg-red-600 px-3 py-1 rounded flex justify-between items-center';
+      kExplain.innerText = `Considering item (v=${it.v}, w=${it.w})\nNot taken\nRemaining capacity = ${cap}`;
+    }
+    idx++;
+  }, 500); // small delay for highlight before coloring
+}
+ 
+function resetKnapsack() {
+  clearInterval(timer);
+  kList.innerHTML = '';
+  kExplain.innerText = '';
+}
+ 
+ 
 </script>
-
+ 
 </body>
 </html>
