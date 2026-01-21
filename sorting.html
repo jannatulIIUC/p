@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SortVision Clone</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  @keyframes rotate-symbol {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(15deg); }
+    100% { transform: rotate(0deg); }
+  }
+  .rotate-symbol {
+    display: inline-block;
+    animation: rotate-symbol 2s infinite ease-in-out;
+  }
+</style>
+</head>
+
+<body class="bg-gray-950 text-gray-100 min-h-screen font-mono flex flex-col items-center p-20">
+
+<!-- Background Video -->
+<video id="bgVideo" autoplay muted loop playsinline class="fixed top-0 left-0 w-full h-full object-cover -z-10">
+  <source src="v2.mp4" type="video/mp4">
+</video>
+
+<!-- Header -->
+<header class="w-full flex flex-col items-center mb-0">
+  <h1 class="text-3xl md:text-4xl font-extrabold flex items-center gap-1 mb-1 text-center">
+
+    <span class="rotate-symbol text-purple-400">_</span>
+    <span class="text-green-400">Sort</span>
+    <span class="text-purple-500">Vision</span>
+    <span class="rotate-symbol text-purple-400">&lt;&gt;</span>
+  </h1>
+  <p class="text-gray-400 text-xs md:text-sm">
+algorithm.visualizer()</p>
+</header>
+
+<!-- Typing Animation -->
+  <div class="text-sm md:text-base font-mono italic h-6 mb-8">
+    <span id="typing-line"></span>
+  </div>
+
+
+<!-- Control Panel -->
+<section class="bg-gray-900/70 backdrop-blur-lg w-full max-w-4xl p-4 rounded-xl shadow-xl mb-6 border border-gray-800">
+  <h2 class="text-xl font-semibold mb-4 text-green-400">Algorithm Configuration</h2>
+
+
+
+
+  <div class="flex flex-wrap gap-4 items-end justify-center">
+
+
+    <!-- Algorithm -->
+    <div>
+      <label class="block mb-1 text-sm font-semibold">Algorithm</label>
+      <select id="algorithm" class="bg-gray-800 border border-gray-700 rounded px-3 py-1 text-sm">
+        <option value="bubble">Bubble Sort</option>
+        <option value="selection">Selection Sort</option>
+        <option value="insertion">Insertion Sort</option>
+        <option value="quick">Quick Sort</option>
+        <option value="merge">Merge Sort</option>
+        <option value="heap">Heap Sort</option>
+      </select>
+    </div>
+
+    <!-- Array Size -->
+    <div>
+      <label class="block mb-1 text-sm font-semibold">Array Size</label>
+      <div class="flex items-center gap-2">
+        <input
+          id="size"
+          type="range"
+          min="10"
+          max="100"
+          value="30"
+          class="w-40 accent-blue-500"
+        />
+        <input
+          id="size-number"
+          type="text"
+          inputmode="numeric"
+          value="30"
+          class="w-20 bg-gray-800 border border-gray-700 rounded px-2 py-1 text-sm"
+        />
+      </div>
+    </div>
+
+    <!-- Speed -->
+    <div>
+      <label class="block mb-1 text-sm font-semibold">
+        Speed: <span id="speed-value">100</span>
+      </label>
+      <input
+        id="speed"
+        type="range"
+        min="10"
+        max="300"
+        value="100"
+        class="w-48 accent-green-500"
+      />
+    </div>
+
+    <!-- Buttons -->
+    <button id="generate" class="bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-lg text-xs shadow-md">
+      Generate
+    </button>
+    <button id="start" class="bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded-lg text-xs shadow-md">
+      Start
+    </button>
+    <button id="stop" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg text-xs shadow-md">
+      End
+    </button>
+
+  </div>
+</section>
+
+<!-- Visualization -->
+<section class="bg-gray-900/70 backdrop-blur-lg w-full max-w-4xl p-4 rounded-xl shadow-xl border border-gray-800">
+  <h2 class="text-lg font-semibold mb-4 text-center text-green-400">Visualization</h2>
+  <div id="array-container" class="flex items-end gap-[1px] h-48 w-full justify-center"></div>
+
+</section>
+
+<!-- Footer -->
+<footer class="mt-10 text-gray-400 text-sm text-center">
+  <span class="rotate-symbol">&lt;/&gt;</span>
+  Computer Algorithm Project | Autumn 25 | Section : 4AF 
+  <span class="rotate-symbol">&lt;/&gt;</span>
+</footer>
+
+<!-- Algorithm Info Sidebar -->
+<div id="algoSidebar"
+     class="fixed top-0 right-0 h-full w-64 bg-gray-900/90 backdrop-blur-lg text-gray-100 p-5 z-40 font-mono text-sm overflow-y-auto transform translate-x-full transition-transform">
+  
+  <!-- Back Arrow -->
+  <div id="closeAlgoSidebar"
+       class="cursor-pointer mb-4 text-green-400 hover:text-green-500 text-lg font-bold">
+    &#8592; Back
+  </div>
+
+  <h2 id="algoSidebarTitle" class="text-xl font-bold mb-4 text-green-400">Algorithm Info</h2>
+  
+  
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DP Visualizer</title>
+
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    .rotate-symbol { display:inline-block; animation: rotate-symbol 2s infinite ease-in-out; }
+    @keyframes rotate-symbol { 0%{transform:rotate(0deg);} 50%{transform:rotate(15deg);} 100%{transform:rotate(0deg);} }
+    .dp-cell { height:48px;width:48px;display:flex;align-items:center;justify-content:center;border-radius:.5rem;background-color:#1e293b;transition:background-color .5s;font-weight:500; }
+    .dp-cell.match { background-color:#16a34a !important; color:white; }
+    .dp-cell.mismatch { background-color:#dc2626 !important; color:white; }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen font-mono flex flex-col items-center p-20">
+
+ <!-- Background Video -->
+<video autoplay muted loop playsinline class="blur-sm fixed top-0 left-0 w-full h-full object-cover -z-10">
+  <source src="v5.mp4" type="video/mp4">
+
+</video>
+
+<header class="w-full flex flex-col items-center mb-0">
+  <h1 class="text-3xl md:text-4xl font-extrabold flex items-center gap-1 mb-1 text-center">
+    <span class="rotate-symbol text-purple-400">_</span>
+    <span class="text-green-400">DP</span>
+    <span class="text-purple-500">Visualizer</span>
+    <span class="rotate-symbol text-purple-400">&lt;&gt;</span>
+  </h1>
+  <p class="text-gray-400 mt-1 font-mono">Visualize Dynamic Programming Algorithms</p>
+</header>
+
+<!-- Tabs -->
+<div class="flex justify-center gap-4 mb-8 mt-6">
+  <button class="tab-btn bg-green-500 px-4 py-2 rounded text-white" data-tab="lcs">LCS</button>
+  <button class="tab-btn bg-purple-500 px-4 py-2 rounded text-white" data-tab="mcm">MCM</button>
+</div>
+
+<section class="w-full max-w-6xl mx-auto space-y-8">
+
+  <!-- LCS Card -->
+  <div id="lcs" class="algo-card hidden bg-gray-900 p-6 rounded-2xl shadow-lg">
+    <h2 class="text-2xl text-green-400 font-bold text-center mb-4">Longest Common Subsequence (LCS)</h2>
+    <div class="flex flex-col md:flex-row gap-4 justify-center mb-6">
+      <input id="lcs_s1" value="AGGTAB" class="px-4 py-2 rounded bg-slate-800 border border-slate-600" placeholder="String 1"/>
+      <input id="lcs_s2" value="GXTXAYB" class="px-4 py-2 rounded bg-slate-800 border border-slate-600" placeholder="String 2"/>
+      <button onclick="startLCS()" class="bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded-lg text-xs shadow-md">Start</button>
+      <button onclick="resetLCS()" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg text-xs shadow-md">Reset</button>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <h3 class="text-lg text-cyan-400 mb-2">DP Table</h3>
+        <div id="lcsTable" class="grid gap-1"></div>
+      </div>
+      <div>
+        <h3 class="text-lg text-cyan-400 mb-2">Explanation</h3>
+        <div id="lcsExplain" class="bg-slate-800 p-4 rounded min-h-[200px]"></div>
+        <h3 class="text-lg text-cyan-400 mt-4 mb-2">LCS Result</h3>
+        <div id="lcsResult" class="bg-slate-800 p-4 rounded min-h-[50px] font-mono text-sm"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MCM Card -->
+  <div id="mcm" class="algo-card hidden bg-gray-900 p-6 rounded-2xl shadow-lg">
+    <h2 class="text-2xl text-purple-400 font-bold text-center mb-4">Matrix Chain Multiplication (MCM)</h2>
+    <div class="flex flex-col md:flex-row gap-4 justify-center mb-6">
+      <textarea id="mcm_input" rows="4" class="bg-slate-800 p-3 rounded w-72 border border-slate-600"
+      placeholder=
+      "10*30 30*5 5*60"></textarea>
+      <button onclick="startMCM()" class="bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded-lg text-xs shadow-md">Start</button>
+      <button onclick="pauseMCM()" class="bg-yellow-600 hover:bg-yellow-700 px-3 py-1.5 rounded-lg text-xs shadow-md">Pause</button>
+      <button onclick="resetMCM()" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg text-xs shadow-md">Reset</button>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div>
+        <h3 class="text-lg text-cyan-400 mb-2">Cost Table (dp)</h3>
+        <div id="mcmDPTable" class="grid gap-1"></div>
+      </div>
+      <div>
+        <h3 class="text-lg text-cyan-400 mb-2">Split Table (k)</h3>
+        <div id="mcmSplitTable" class="grid gap-1"></div>
+      </div>
+      <div>
+        <h3 class="text-lg text-cyan-400 mb-2">Explanation</h3>
+        <div id="mcmExplain" class="bg-slate-800 p-4 rounded min-h-[220px] font-mono text-sm"></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- Footer -->
+<footer class="mt-10 text-gray-400 text-sm text-center">
+  <span class="rotate-symbol">&lt;/&gt;</span>
+  Computer Algorithm Project | Autumn 25 | Section : 4AF 
+  <span class="rotate-symbol">&lt;/&gt;</span>
+</footer>
+
+<!-- Tabs -->
+<script>
+const tabs = document.querySelectorAll(".tab-btn");
+const cards = document.querySelectorAll(".algo-card");
+tabs.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const target = btn.dataset.tab;
+    cards.forEach(c=>c.classList.add("hidden"));
+    document.getElementById(target).classList.remove("hidden");
+  });
+});
+document.getElementById("lcs").classList.remove("hidden");
+</script>
+
+<!-- DP Scripts -->
+<script>
+  // LCS
+  let lcsDP=[], li=1, lj=1, lcsInt, s1='', s2='', lcsString='', reconstructDone=false;
+  function startLCS(){
+    clearInterval(lcsInt);
+    s1=lcs_s1.value; s2=lcs_s2.value; lcsString=''; reconstructDone=false;
+    lcsDP=Array.from({length:s1.length+1},()=>Array(s2.length+1).fill(0));
+    lcsTable.innerHTML=''; lcsResult.innerText=''; lcsExplain.innerText='';
+    lcsTable.style.gridTemplateColumns=`repeat(${s2.length+2},40px)`;
+    let blank=document.createElement('div'); blank.className='dp-cell bg-gray-700 font-mono'; lcsTable.appendChild(blank);
+    for(let j=0;j<s2.length;j++){ let cell=document.createElement('div'); cell.className='dp-cell bg-gray-800 font-mono'; cell.innerText=s2[j]; lcsTable.appendChild(cell);}
+    lcsTable.appendChild(document.createElement('div'));
+    for(let i=0;i<=s1.length;i++){
+      let header=document.createElement('div'); header.className='dp-cell bg-gray-800 font-mono'; header.innerText=i===0?'':s1[i-1]; lcsTable.appendChild(header);
+      for(let j=0;j<=s2.length;j++){
+        let cell=document.createElement('div'); cell.id=`l-${i}-${j}`; cell.className='dp-cell bg-slate-700'; cell.innerText=0; lcsTable.appendChild(cell);
+      }
+    }
+    li=1; lj=1;
+    lcsInt=setInterval(stepLCS,1000);
+  }
+
+  function stepLCS(){
+    if(li>s1.length){ clearInterval(lcsInt); reconstructLCS(); return; }
+    const cell=document.getElementById(`l-${li}-${lj}`);
+    cell.classList.remove('match','mismatch');
+    if(s1[li-1]===s2[lj-1]){
+      lcsDP[li][lj]=1+lcsDP[li-1][lj-1]; cell.classList.add('match');
+      lcsExplain.innerText=`s1[${li-1}] (${s1[li-1]}) matches s2[${lj-1}] (${s2[lj-1]}), dp[${li}][${lj}] = ${lcsDP[li][lj]}`;
+    } else{
+      lcsDP[li][lj]=Math.max(lcsDP[li-1][lj],lcsDP[li][lj-1]); cell.classList.add('mismatch');
+      lcsExplain.innerText=`No match, dp[${li}][${lj}] = max(dp[${li-1}][${lj}]=${lcsDP[li-1][lj]}, dp[${li}][${lj-1}]=${lcsDP[li][lj-1]}) = ${lcsDP[li][lj]}`;
+    }
+    cell.innerText=lcsDP[li][lj]; lj++; if(lj>s2.length){ lj=1; li++; }
+  }
+
+  function reconstructLCS(){
+    let i=s1.length,j=s2.length; lcsString='';
+    while(i>0 && j>0){
+      if(s1[i-1]===s2[j-1]){ lcsString=s1[i-1]+lcsString;i--;j--; }
+      else if(lcsDP[i-1][j]>lcsDP[i][j-1]) i--; else j--;
+    }
+    lcsResult.innerText=`LCS = "${lcsString}" (Length = ${lcsString.length})`;
+  }
+  function resetLCS(){ clearInterval(lcsInt); lcsTable.innerHTML=''; lcsExplain.innerText=''; lcsResult.innerText=''; }
+
+  // MCM
+  let p=[], dpM=[], sM=[], iM=0, jM=0, kM=0, L=2, mcmTimer=null, paused=false, freshCell=true;
+  function parseMCMInput(){ const lines=mcm_input.value.trim().split('\n'); let dims=[], lastCol=null; lines.forEach(line=>{ const [r,c]=line.split('*').map(Number); dims.push(r); lastCol=c;}); dims.push(lastCol); return dims; }
+  function createTable(container,n,initFn){ container.innerHTML=''; container.style.gridTemplateColumns=`repeat(${n},48px)`; for(let r=0;r<n;r++)for(let c=0;c<n;c++){ const cell=document.createElement('div'); cell.id=`${container.id}-${r}-${c}`; cell.className='dp-cell'; cell.innerText=initFn(r,c); container.appendChild(cell); } }
+  function startMCM(){ resetMCM(); p=parseMCMInput(); const n=p.length-1; dpM=Array.from({length:n},(_,i)=>Array.from({length:n},(_,j)=>(i===j?0:Infinity))); sM=Array.from({length:n},()=>Array(n).fill('')); createTable(mcmDPTable,n,(r,c)=>r===c?'0':r<c?'∞':''); createTable(mcmSplitTable,n,()=> ''); L=1; iM=0;kM=iM; paused=false; freshCell=true; mcmTimer=setInterval(stepMCM,2000); }
+  function stepMCM(){ if(paused)return; const n=dpM.length; if(L>=n){ clearInterval(mcmTimer); mcmExplain.innerText+=`\n\n✔ Final Answer = dp[0][${n-1}] = ${dpM[0][n-1]}`; return;} jM=iM+L; if(jM>=n){ iM=0; L++; return;} if(freshCell){ dpM[iM][jM]=Infinity; kM=iM; freshCell=false;} const cost=dpM[iM][kM]+dpM[kM+1][jM]+p[iM]*p[kM+1]*p[jM+1]; const cell=document.getElementById(`mcmDPTable-${iM}-${jM}`); const splitCell=document.getElementById(`mcmSplitTable-${iM}-${jM}`); mcmExplain.innerText=`Computing dp[${iM}][${jM}]\nTrying k = ${kM}\n= dp[${iM}][${kM}] + dp[${kM+1}][${jM}] + ${p[iM]}×${p[kM+1]}×${p[jM+1]}\n= ${cost}`; if(cost<dpM[iM][jM]){ dpM[iM][jM]=cost; sM[iM][jM]=kM; cell.style.backgroundColor='#16a34a'; cell.innerText=cost; splitCell.innerText=kM;} else{ cell.style.backgroundColor='#dc2626'; } kM++; if(kM>jM-1){ iM++; freshCell=true;} }
+  function pauseMCM(){ paused=!paused; }
+  function resetMCM(){ clearInterval(mcmTimer); mcmDPTable.innerHTML=''; mcmSplitTable.innerHTML=''; mcmExplain.innerText=''; paused=false; freshCell=true; }
+</script>
+
+</body>
+</html>

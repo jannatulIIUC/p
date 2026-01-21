@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algo Visualizer Hub</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+
+
+<style>
+  @keyframes rotate-symbol {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(15deg); }
+    100% { transform: rotate(0deg); }
+  }
+  .rotate-symbol {
+    display: inline-block;
+    animation: rotate-symbol 2s infinite ease-in-out;
+  }
+
+  /* Sidebar slide from right */
+  #creatorSidebar {
+    transition: transform 0.3s ease;
+    transform: translateX(100%);
+  }
+  #creatorSidebar.open {
+    transform: translateX(0);
+  }
+
+  html, body {
+    overflow: hidden; /* prevent scrolling */
+  }
+
+  
+</style>
+</head>
+
+<body class="text-gray-100 font-sans flex items-center justify-center h-screen w-screen relative">
+
+<!-- Background Video -->
+<video autoplay muted loop playsinline class="fixed top-0 left-0 w-full h-full object-cover -z-10">
+  <source src="v1.mp4" type="video/mp4">
+</video>
+
+<!-- Dark overlay -->
+<div class="fixed top-0 left-0 w-full h-full bg-black/70 -z-10"></div>
+
+<!-- Created By Button -->
+<button id="creatorBtn"
+  class="fixed top-5 right-5 z-50 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded shadow-lg">
+  Created By
+</button>
+
+<!-- Sidebar -->
+<div id="creatorSidebar"
+  class="fixed top-0 right-0 h-full w-64 bg-gray-900/90 backdrop-blur-lg text-gray-100 p-5 z-40 font-mono text-sm">
+  
+  <!-- Back Arrow -->
+  <div id="closeSidebar" class="cursor-pointer mb-4 text-green-400 hover:text-green-500 text-lg font-bold">
+    &#8592; 
+  </div>
+
+  <h2 class="text-xl font-bold mb-4 text-green-400">Creators</h2>
+
+  <div class="space-y-3">
+    <div class="p-3 bg-gray-800/60 rounded-lg border border-gray-700">
+      <div class="text-sm font-semibold">Jannatul Maowa</div>
+      <p class="text-xs text-gray-400">ID: C241429</p>
+      <p class="text-xs text-gray-400">Semester: 4th | Section: 4AF</p>
+    </div>
+
+    <div class="p-3 bg-gray-800/60 rounded-lg border border-gray-700">
+      <div class="text-sm font-semibold">Faharia Tabassum</div>
+      <p class="text-xs text-gray-400">ID: C241419</p>
+      <p class="text-xs text-gray-400">Semester: 4th | Section: 4AF</p>
+    </div>
+
+    <div class="p-3 bg-gray-800/60 rounded-lg border border-gray-700">
+      <div class="text-sm font-semibold">Syeda Afaf Anbar Faiza</div>
+      <p class="text-xs text-gray-400">ID: C241425</p>
+      <p class="text-xs text-gray-400">Semester: 4th | Section: 4AF</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- Hero Section -->
+<div class="flex flex-col items-center text-center px-6">
+
+  <!-- Title -->
+<h1 class="font-mono text-4xl md:text-5xl font-normal tracking-wide
+           text-gray-200 flex justify-center gap-2 mb-4">
+
+
+
+
+  <span class="text-purple-400 opacity-80">_</span>
+
+  <span class="bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+    ALGO
+  </span>
+
+  <span class="bg-gradient-to-r from-purple-400 to-indigo-500
+               bg-clip-text text-transparent">
+    VISUALIZER
+  </span>
+
+  <span class="text-purple-400 opacity-80">&lt;&gt;</span>
+
+</h1>
+
+
+  <!-- Typing Animation -->
+  <div class="text-sm md:text-base  font-mono italic h-6 mb-4">
+    <span id="typing-line"></span>
+  </div>
+
+  <p class="text-gray-300 text-md md:text-lg max-w-xl mb-10">
+    Explore DP, Greedy, Sorting, and other algorithms visually with interactive simulations!
+  </p>
+
+  <!-- Features -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
+
+      <a href="sorting.html"
+        class="bg-gray-900/70 backdrop-blur-lg rounded-2xl p-4 flex flex-col items-center text-center hover:scale-105 hover:shadow-2xl transition transform duration-300 border border-gray-700">
+        <div class="text-4xl mb-2">🟦</div>
+        <h3 class="text-md font-semibold mb-1">Sorting</h3>
+        <p class="text-xs text-gray-400 leading-relaxed">Bubble, Selection, Insertion visualized</p>
+      </a>
+
+      <a href="dp.html"
+        class="bg-gray-900/70 backdrop-blur-lg rounded-2xl p-4 flex flex-col items-center text-center hover:scale-105 hover:shadow-2xl transition transform duration-300 border border-gray-700">
+        <div class="text-4xl mb-2">🧩</div>
+        <h3 class="text-md font-semibold mb-1">Dynamic Programming</h3>
+        <p class="text-xs text-gray-400 leading-relaxed">LCS, MCM and other DP problems</p>
+      </a>
+
+      <a href="greedy.html"
+        class="bg-gray-900/70 backdrop-blur-lg rounded-2xl p-4 flex flex-col items-center text-center hover:scale-105 hover:shadow-2xl transition transform duration-300 border border-gray-700">
+        <div class="text-4xl mb-2">⚡</div>
+        <h3 class="text-md font-semibold mb-1">Greedy Algorithms</h3>
+        <p class="text-xs text-gray-400 leading-relaxed">Activity Selection & other greedy problems</p>
+      </a>
+
+    </div>
+  </div>
+  
+    
+<script>
+  // Typing animation
+  const lines = [
+    { text: "Explore sorting algorithms visually.", color: "text-green-400" },
+    { text: "Learn dynamic programming step by step.", color: "text-red-400" },
+    { text: "Understand greedy techniques interactively.", color: "text-blue-400" }
+  ];
+  let i = 0;
+  (function type() {
+    const { text, color } = lines[i];
+    const el = document.getElementById("typing-line");
+    el.className = color;
+    let j = 0;
+    (function typingChar() {
+      if (j < text.length) {
+        el.textContent += text[j++];
+        setTimeout(typingChar, 50);
+      } else {
+        setTimeout(() => {
+          el.textContent = "";
+          i = (i + 1) % lines.length;
+          type();
+        }, 1500);
+      }
+    })();
+  })();
+
+  // Sidebar toggle
+
+  const btn = document.getElementById("creatorBtn");
+  const sidebar = document.getElementById("creatorSidebar");
+  const closeBtn = document.getElementById("closeSidebar");
+
+  btn.addEventListener("click", () => {
+    sidebar.classList.add("open");
+    btn.style.display = "none";
+  });
+
+  closeBtn.addEventListener("click", () => {
+    sidebar.classList.remove("open");
+    btn.style.display = "block";
+  });
+</script>
+
+</body>
+</html>
